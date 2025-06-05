@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Outil d'analyse SWOT collaborative avec matrice stratégique croisée. Gratuit et sans inscription.">
+    <meta name="keywords" content="SWOT, analyse stratégique, matrice croisée, outil gratuit, collaboration">
+    <meta name="author" content="Analyseur SWOT Collaboratif">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Analyseur SWOT Avancé - Outil Gratuit">
+    <meta property="og:description" content="Créez vos analyses SWOT avec matrice stratégique croisée. Collaboration par fichiers, export complet, interface moderne.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Analyseur SWOT Avancé - Outil Gratuit">
+    <meta property="twitter:description" content="Créez vos analyses SWOT avec matrice stratégique croisée. Collaboration par fichiers, export complet, interface moderne.">
+    
+    <title>Analyseur SWOT Avancé - Outil Gratuit d'Analyse Stratégique</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    
+    <style>
+        /* Reset and base styles */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            color: #374151;
+            line-height: 1.6;
+        }
+        
+        /* Container and layout */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        
+        .version-info {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Project management section */
+        .project-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-code {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        
+        .collaboration-note {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 4px solid rgba(255,255,255,0.3);
+            margin-top: 1rem;
+        }
+        
+        .project-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Input section */
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 32rem;
+            margin: 0 auto;
+        }
+        
+        .input {
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .input::placeholder { 
+            color: rgba(255,255,255,0.7); 
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: #3498db;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin: 2rem 0 0 0;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.25rem 2rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            background: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .tab:hover::before {
+            left: 100%;
+        }
+        
+        .tab.active { 
+            background: white; 
+            color: #3498db;
+            border-bottom-color: #3498db;
+            box-shadow: 0 -2px 10px rgba(52, 152, 219, 0.1);
+        }
+        
+        .tab:not(.active) { 
+            background: #f8f9fa; 
+            color: #374151; 
+        }
+        
+        .tab:not(.active):hover { 
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        /* Tab content */
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.4s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Grids */
+        .swot-grid, .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Cards */
+        .swot-card, .strategy-card {
+            border: 3px solid;
+            border-radius: 15px;
+            padding: 1.5rem;
+            background: white;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .swot-card::before, .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .swot-card:hover::before, .strategy-card:hover::before {
+            opacity: 0.5;
+        }
+        
+        .swot-card:hover, .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        /* Card color schemes */
+        .swot-card.strengths, .strategy-card.offensive { 
+            border-color: #16a34a; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); 
+        }
+        .swot-card.weaknesses, .strategy-card.survival { 
+            border-color: #dc2626; 
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%); 
+        }
+        .swot-card.opportunities, .strategy-card.development { 
+            border-color: #2563eb; 
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
+        }
+        .swot-card.threats, .strategy-card.defensive { 
+            border-color: #ea580c; 
+            background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); 
+        }
+        
+        /* Card headers */
+        .card-header {
+            margin: -1.5rem -1.5rem 1rem -1.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .card-header.strengths, .card-header.offensive { background: #dcfce7; color: #166534; }
+        .card-header.weaknesses, .card-header.survival { background: #fecaca; color: #991b1b; }
+        .card-header.opportunities, .card-header.development { background: #dbeafe; color: #1e40af; }
+        .card-header.threats, .card-header.defensive { background: #fed7aa; color: #9a3412; }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-description {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .strategy-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .strategy-question {
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: #374151;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.6);
+            border-radius: 8px;
+            border-left: 4px solid currentColor;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Input sections */
+        .input-section {
+            margin-bottom: 1rem;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-text {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .input-text:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .add-btn {
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .add-btn:hover { 
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .add-btn:active {
+            transform: translateY(0);
+        }
+        
+        .examples {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+            font-style: italic;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border-radius: 6px;
+            border-left: 3px solid #d1d5db;
+        }
+        
+        /* Items list */
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 350px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
+        }
+        
+        .items-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .items-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        .items-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .items-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e5e7eb;
+            animation: slideInItem 0.3s ease-out;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #3498db, #2980b9);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .item:hover::before {
+            opacity: 1;
+        }
+        
+        .item:hover {
+            border-color: #3498db;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        @keyframes slideInItem {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .item-content {
+            flex: 1;
+            line-height: 1.4;
+        }
+        
+        .item-text {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .item-meta {
+            font-size: 0.75rem;
+            color: #6b7280;
+            opacity: 0.8;
+        }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+        
+        .delete-btn:hover { 
+            background: #fee2e2; 
+            transform: scale(1.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 2rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 2px dashed #d1d5db;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .empty-state::before {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0.1;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
+        }
+        
+        /* Statistics dashboard */
+        .statistics-dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .statistics-dashboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .statistics-dashboard > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #fff, #e1e8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            padding: 0 1rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-white {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-white:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            animation: modalSlideIn 0.3s ease-out;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container { margin: 0.5rem; }
+            .title { font-size: 2rem; }
+            .input-group { grid-template-columns: 1fr; }
+            .tabs { flex-direction: column; }
+            .swot-grid, .strategy-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .action-buttons { flex-direction: column; align-items: center; }
+            .project-header { flex-direction: column; text-align: center; }
+            .project-buttons { justify-content: center; }
+            .tab { padding: 1rem 1.5rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .title { font-size: 1.75rem; }
+            .tab { padding: 0.75rem 1rem; font-size: 0.9rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
+        }
+        
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .container { box-shadow: none; }
+            .header { background: #f8f9fa !important; color: #333 !important; }
+            .tab-content { display: block !important; }
+            .tabs { display: none !important; }
+        }
+        
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Focus styles for accessibility */
+        .tab:focus, .btn:focus, .input:focus, .input-text:focus, .add-btn:focus {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .card-header { border-bottom: 2px solid currentColor; }
+            .item { border-width: 3px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="version-info no-print">v2.0 - GitHub Edition</div>
+            <div class="header-content">
+                <h1 class="title">🎯 Analyseur SWOT Avancé</h1>
+                <p class="subtitle">Outil gratuit d'analyse stratégique avec matrice croisée</p>
+                
+                <!-- Project Management Section -->
+                <div class="project-section">
+                    <div class="project-header">
+                        <div class="project-info">
+                            <h3>🚀 Projet: <span class="project-code" id="sessionCode">XXXXX</span></h3>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Sauvegardé localement dans votre navigateur</p>
+                        </div>
+                        <div class="project-buttons">
+                            <button id="shareBtn" class="btn btn-white">
+                                <span class="icon">📤</span> Exporter pour Partage
+                            </button>
+                            <button id="importBtn" class="btn btn-white">
+                                <span class="icon">📥</span> Importer Fichier
+                            </button>
+                            <button id="newSessionBtn" class="btn btn-white">
+                                <span class="icon">🔄</span> Nouveau Projet
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="collaboration-note">
+                        <strong>💡 Collaboration :</strong> 
+                        Exportez votre projet, partagez le fichier JSON avec votre équipe. 
+                        Chaque membre peut l'importer, ajouter ses contributions, puis réexporter. 
+                        <em>Idéal pour les réunions d'équipe !</em>
+                    </div>
+                </div>
+                
+                <!-- Input Form -->
+                <div class="input-group">
+                    <input type="text" id="organizationInput" placeholder="Nom de l'organisation ou du projet" class="input" autocomplete="organization">
+                    <input type="text" id="userInput" placeholder="Votre nom (optionnel)" class="input" autocomplete="name">
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button id="swotTab" class="tab active" type="button" aria-selected="true">
+                <span>📋</span>
+                Analyse SWOT
+            </button>
+            <button id="crossedTab" class="tab" type="button" aria-selected="false">
+                <span>🎯</span>
+                Analyse Croisée
+            </button>
+        </div>
+        
+        <!-- SWOT Analysis Content -->
+        <div id="swotContent" class="tab-content active" role="tabpanel">
+            <h2 style="margin-bottom: 1.5rem; text-align: center; color: #2c3e50; font-size: 1.8rem;">📊 Analyse SWOT Fondamentale</h2>
+            
+            <div class="swot-grid">
+                <!-- Forces -->
+                <div class="swot-card strengths">
+                    <div class="card-header strengths">
+                        <div class="card-title">💪 Forces</div>
+                        <div class="card-description">Avantages internes, ressources et capacités</div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une force..." data-category="strengths" aria-label="Ajouter une force">
+                            <button class="add-btn" data-category="strengths" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Expertise reconnue, Équipe motivée, Financement stable, Innovation technologique
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="strengthsList" role="list">
+                        <div class="empty-state">Aucune force ajoutée</div>
+                    </div>
+                </div>
+                
+                <!-- Faiblesses -->
+                <div class="swot-card weaknesses">
+                    <div class="card-header weaknesses">
+                        <div class="card-title">⚠️ Faiblesses</div>
+                        <div class="card-description">Limitations internes, points à améliorer</div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une faiblesse..." data-category="weaknesses" aria-label="Ajouter une faiblesse">
+                            <button class="add-btn" data-category="weaknesses" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Manque de visibilité, Ressources limitées, Processus inefficaces, Budget restreint
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="weaknessesList" role="list">
+                        <div class="empty-state">Aucune faiblesse ajoutée</div>
+                    </div>
+                </div>
+                
+                <!-- Opportunités -->
+                <div class="swot-card opportunities">
+                    <div class="card-header opportunities">
+                        <div class="card-title">🚀 Opportunités</div>
+                        <div class="card-description">Facteurs externes favorables</div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une opportunité..." data-category="opportunities" aria-label="Ajouter une opportunité">
+                            <button class="add-btn" data-category="opportunities" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Nouveaux financements, Partenariats possibles, Évolutions réglementaires, Marché émergent
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="opportunitiesList" role="list">
+                        <div class="empty-state">Aucune opportunité ajoutée</div>
+                    </div>
+                </div>
+                
+                <!-- Menaces -->
+                <div class="swot-card threats">
+                    <div class="card-header threats">
+                        <div class="card-title">⚡ Menaces</div>
+                        <div class="card-description">Risques et défis externes</div>
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une menace..." data-category="threats" aria-label="Ajouter une menace">
+                            <button class="add-btn" data-category="threats" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Concurrence accrue, Réduction budgets, Changements politiques, Instabilité économique
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="threatsList" role="list">
+                        <div class="empty-state">Aucune menace ajoutée</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Crossed Analysis Content -->
+        <div id="crossedContent" class="tab-content" role="tabpanel">
+            <h2 style="margin-bottom: 1.5rem; text-align: center; color: #2c3e50; font-size: 1.8rem;">🎯 Analyse Croisée SWOT</h2>
+            
+            <!-- Statistics Dashboard -->
+            <div class="statistics-dashboard">
+                <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">📈 Statistiques de l'Analyse Croisée</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-offensive">0</div>
+                        <div class="stat-label">Stratégies Offensives</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-defensive">0</div>
+                        <div class="stat-label">Stratégies Défensives</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-development">0</div>
+                        <div class="stat-label">Stratégies de Développement</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-survival">0</div>
+                        <div class="stat-label">Stratégies de Survie</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategy Matrix -->
+            <div class="strategy-grid">
+                
+                <!-- Stratégies Offensives -->
+                <div class="strategy-card offensive">
+                    <div class="card-header offensive">
+                        <div class="card-title">🚀 Stratégies Offensives</div>
+                        <div class="strategy-subtitle">Forces × Opportunités</div>
+                    </div>
+                    <div class="strategy-question">
+                        <strong>Question stratégique :</strong> "Comment utiliser nos forces pour saisir les opportunités ?"
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une stratégie offensive..." data-category="offensive" aria-label="Ajouter une stratégie offensive">
+                            <button class="add-btn" data-category="offensive" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Exploiter notre expertise pour conquérir de nouveaux marchés, Utiliser notre réputation pour créer des partenariats stratégiques
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="offensiveList" role="list">
+                        <div class="empty-state">Aucune stratégie offensive ajoutée</div>
+                    </div>
+                </div>
+
+                <!-- Stratégies Défensives -->
+                <div class="strategy-card defensive">
+                    <div class="card-header defensive">
+                        <div class="card-title">🛡️ Stratégies Défensives</div>
+                        <div class="strategy-subtitle">Forces × Menaces</div>
+                    </div>
+                    <div class="strategy-question">
+                        <strong>Question stratégique :</strong> "Comment utiliser nos forces pour contrer les menaces ?"
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une stratégie défensive..." data-category="defensive" aria-label="Ajouter une stratégie défensive">
+                            <button class="add-btn" data-category="defensive" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Utiliser notre innovation pour nous différencier de la concurrence, Mobiliser notre équipe pour fidéliser les clients
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="defensiveList" role="list">
+                        <div class="empty-state">Aucune stratégie défensive ajoutée</div>
+                    </div>
+                </div>
+
+                <!-- Stratégies de Développement -->
+                <div class="strategy-card development">
+                    <div class="card-header development">
+                        <div class="card-title">📈 Stratégies de Développement</div>
+                        <div class="strategy-subtitle">Faiblesses × Opportunités</div>
+                    </div>
+                    <div class="strategy-question">
+                        <strong>Question stratégique :</strong> "Comment corriger nos faiblesses pour profiter des opportunités ?"
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une stratégie de développement..." data-category="development" aria-label="Ajouter une stratégie de développement">
+                            <button class="add-btn" data-category="development" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Former l'équipe aux nouvelles technologies, Investir dans le marketing digital pour améliorer la visibilité
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="developmentList" role="list">
+                        <div class="empty-state">Aucune stratégie de développement ajoutée</div>
+                    </div>
+                </div>
+
+                <!-- Stratégies de Survie -->
+                <div class="strategy-card survival">
+                    <div class="card-header survival">
+                        <div class="card-title">⚠️ Stratégies de Survie</div>
+                        <div class="strategy-subtitle">Faiblesses × Menaces</div>
+                    </div>
+                    <div class="strategy-question">
+                        <strong>Question stratégique :</strong> "Comment minimiser nos faiblesses face aux menaces ?"
+                    </div>
+                    
+                    <div class="input-section">
+                        <div class="input-row">
+                            <input type="text" class="input-text" placeholder="Ajouter une stratégie de survie..." data-category="survival" aria-label="Ajouter une stratégie de survie">
+                            <button class="add-btn" data-category="survival" type="button">Ajouter</button>
+                        </div>
+                        <div class="examples">
+                            💡 <strong>Exemples :</strong> Optimiser les coûts pour maintenir la compétitivité, Simplifier les processus, Diversifier les sources de revenus
+                        </div>
+                    </div>
+                    
+                    <div class="items-list" id="survivalList" role="list">
+                        <div class="empty-state">Aucune stratégie de survie ajoutée</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons no-print">
+            <button id="exportBtn" class="btn btn-primary" type="button">
+                <span class="icon">📥</span>
+                Exporter le Rapport Complet
+            </button>
+            <button id="saveBtn" class="btn btn-secondary" type="button">
+                <span class="icon">💾</span>
+                Sauvegarder (JSON)
+            </button>
+            <button id="loadBtn" class="btn btn-secondary" type="button">
+                <span class="icon">📂</span>
+                Charger une Sauvegarde
+            </button>
+            <button id="clearBtn" class="btn btn-secondary" type="button">
+                <span class="icon">🔄</span>
+                Réinitialiser
+            </button>
+            <button id="printBtn" class="btn btn-secondary" type="button">
+                <span class="icon">🖨️</span>
+                Imprimer
+            </button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                <strong>Analyseur SWOT Avancé</strong> - Outil gratuit et open source<br>
+                Créé avec ❤️ pour faciliter vos analyses stratégiques<br>
+                <small>Vos données restent privées et sont stockées localement dans votre navigateur</small>
+            </p>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <h2>🤝 Guide de Collaboration</h2>
+            
+            <div style="text-align: left; background: #f9fafb; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                <h3 style="color: #2563eb; margin-bottom: 1rem;">📋 Méthode de Collaboration :</h3>
+                <ol style="color: #374151; line-height: 1.8; padding-left: 1.5rem;">
+                    <li><strong>Initiateur :</strong> Créez votre analyse SWOT de base</li>
+                    <li><strong>Export :</strong> Cliquez "Exporter pour Partage" et envoyez le fichier JSON à votre équipe</li>
+                    <li><strong>Équipe :</strong> Chaque membre importe le fichier, ajoute ses contributions, puis réexporte</li>
+                    <li><strong>Consolidation :</strong> Récupérez tous les fichiers et fusionnez les meilleures idées</li>
+                    <li><strong>Finalisation :</strong> Créez le rapport final avec toutes les contributions</li>
+                </ol>
+            </div>
+            
+            <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #f59e0b;">
+                <p style="color: #92400e; font-size: 0.95rem;">
+                    <strong>💡 Astuce Pro :</strong> Pour une collaboration temps réel, utilisez cet outil lors d'une visioconférence avec partage d'écran. Une personne tape, toute l'équipe contribue !
+                </p>
+            </div>
+            
+            <button id="closeInstructionsBtn" class="btn btn-primary" type="button">J'ai compris !</button>
+        </div>
+    </div>
+
+    <script>
+        /*
+         * ANALYSEUR SWOT AVANCÉ - Version GitHub Pages
+         * Outil gratuit d'analyse stratégique avec matrice croisée
+         * Collaboration par fichiers JSON
+         */
+        
+        // Configuration et état de l'application
+        const APP_CONFIG = {
+            version: '2.0.0',
+            storagePrefix: 'swot_v2_',
+            maxHistoryItems: 10,
+            autoSaveInterval: 30000 // 30 secondes
+        };
+        
+        // État global de l'application
+        let appState = {
+            organization: '',
+            currentUser: '',
+            activeTab: 'swot',
+            projectCode: '',
+            lastSaved: null,
+            isDirty: false
+        };
+        
+        // Données de l'analyse
+        let swotData = {
+            strengths: [],
+            weaknesses: [],
+            opportunities: [],
+            threats: []
+        };
+        
+        let strategiesData = {
+            offensive: [],
+            defensive: [],
+            development: [],
+            survival: []
+        };
+        
+        // Fonctions utilitaires
+        function generateId() {
+            return Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        function generateProjectCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        function formatTime(date) {
+            return date.toLocaleTimeString('fr-FR', { 
+                hour: '2-digit', 
+                minute: '2-digit'
+            });
+        }
+        
+        function formatDate(date) {
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Gestion des projets
+        function initializeProject() {
+            if (!appState.projectCode) {
+                appState.projectCode = generateProjectCode();
+            }
+            updateProjectDisplay();
+            loadFromLocalStorage();
+            startAutoSave();
+        }
+        
+        function createNewProject() {
+            if (appState.isDirty && !confirm('Créer un nouveau projet ? Vous pourrez sauvegarder le projet actuel avant.')) {
+                return;
+            }
+            
+            // Reset de l'état
+            appState.projectCode = generateProjectCode();
+            appState.organization = '';
+            appState.currentUser = '';
+            appState.isDirty = false;
+            
+            // Reset des données
+            swotData = { strengths: [], weaknesses: [], opportunities: [], threats: [] };
+            strategiesData = { offensive: [], defensive: [], development: [], survival: [] };
+            
+            // Reset de l'interface
+            document.getElementById('organizationInput').value = '';
+            document.getElementById('userInput').value = '';
+            
+            updateProjectDisplay();
+            renderAllData();
+            saveToLocalStorage();
+            
+            showNotification('🎉 Nouveau projet créé !', 'success');
+        }
+        
+        function updateProjectDisplay() {
+            document.getElementById('sessionCode').textContent = appState.projectCode;
+            
+            // Mise à jour du titre de la page
+            const orgName = appState.organization || 'Nouveau Projet';
+            document.title = `${orgName} - Analyseur SWOT Avancé`;
+        }
+        
+        // Gestion des données
+        function addItem(category) {
+            const input = document.querySelector(`input[data-category="${category}"]`);
+            const value = input.value.trim();
+            
+            if (!value) {
+                showNotification('⚠️ Veuillez saisir du texte avant d\'ajouter', 'warning');
+                return;
+            }
+            
+            const item = {
+                id: generateId(),
+                text: value,
+                author: appState.currentUser || 'Anonyme',
+                timestamp: formatTime(new Date()),
+                createdAt: new Date().toISOString()
+            };
+            
+            // Ajout de l'élément selon la catégorie
+            if (['strengths', 'weaknesses', 'opportunities', 'threats'].includes(category)) {
+                swotData[category].push(item);
+            } else {
+                strategiesData[category].push(item);
+                updateStatistics();
+            }
+            
+            input.value = '';
+            renderCategory(category);
+            markAsDirty();
+            saveToLocalStorage();
+            
+            showNotification(`✅ ${getCategoryLabel(category)} ajouté(e)`, 'success');
+        }
+        
+        function removeItem(category, itemId) {
+            let itemText = '';
+            
+            if (['strengths', 'weaknesses', 'opportunities', 'threats'].includes(category)) {
+                const item = swotData[category].find(item => item.id === itemId);
+                itemText = item ? item.text.substring(0, 30) + '...' : '';
+                swotData[category] = swotData[category].filter(item => item.id !== itemId);
+            } else {
+                const item = strategiesData[category].find(item => item.id === itemId);
+                itemText = item ? item.text.substring(0, 30) + '...' : '';
+                strategiesData[category] = strategiesData[category].filter(item => item.id !== itemId);
+                updateStatistics();
+            }
+            
+            renderCategory(category);
+            markAsDirty();
+            saveToLocalStorage();
+            
+            showNotification(`🗑️ Élément supprimé`, 'info');
+        }
+        
+        function getCategoryLabel(category) {
+            const labels = {
+                'strengths': 'Force',
+                'weaknesses': 'Faiblesse', 
+                'opportunities': 'Opportunité',
+                'threats': 'Menace',
+                'offensive': 'Stratégie offensive',
+                'defensive': 'Stratégie défensive',
+                'development': 'Stratégie de développement',
+                'survival': 'Stratégie de survie'
+            };
+            return labels[category] || category;
+        }
+        
+        // Rendu des données
+        function renderCategory(category) {
+            const list = document.getElementById(`${category}List`);
+            const items = swotData[category] || strategiesData[category];
+            
+            if (!items || items.length === 0) {
+                const emptyText = ['offensive', 'defensive', 'development', 'survival'].includes(category) 
+                    ? 'Aucune stratégie ajoutée' 
+                    : 'Aucun élément ajouté';
+                list.innerHTML = `<div class="empty-state">${emptyText}</div>`;
+                return;
+            }
+            
+            list.innerHTML = items.map(item => `
+                <div class="item" role="listitem">
+                    <div class="item-content">
+                        <div class="item-text">${escapeHtml(item.text)}</div>
+                        <div class="item-meta">
+                            ${escapeHtml(item.author)} • ${item.timestamp}
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="removeItem('${category}', '${item.id}')" 
+                            title="Supprimer cet élément" type="button">🗑️</button>
+                </div>
+            `).join('');
+        }
+        
+        function renderAllData() {
+            const allCategories = [
+                'strengths', 'weaknesses', 'opportunities', 'threats',
+                'offensive', 'defensive', 'development', 'survival'
+            ];
+            allCategories.forEach(renderCategory);
+            updateStatistics();
+        }
+        
+        function updateStatistics() {
+            document.getElementById('stat-offensive').textContent = strategiesData.offensive.length;
+            document.getElementById('stat-defensive').textContent = strategiesData.defensive.length;
+            document.getElementById('stat-development').textContent = strategiesData.development.length;
+            document.getElementById('stat-survival').textContent = strategiesData.survival.length;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Gestion des onglets
+        function showTab(tabName) {
+            appState.activeTab = tabName;
+            
+            // Mise à jour des boutons d'onglets
+            document.getElementById('swotTab').classList.toggle('active', tabName === 'swot');
+            document.getElementById('crossedTab').classList.toggle('active', tabName === 'crossed');
+            document.getElementById('swotTab').setAttribute('aria-selected', tabName === 'swot');
+            document.getElementById('crossedTab').setAttribute('aria-selected', tabName === 'crossed');
+            
+            // Affichage du contenu
+            document.getElementById('swotContent').classList.toggle('active', tabName === 'swot');
+            document.getElementById('crossedContent').classList.toggle('active', tabName === 'crossed');
+            
+            // Mise à jour des statistiques si nécessaire
+            if (tabName === 'crossed') {
+                updateStatistics();
+            }
+        }
+        
+        // Stockage local
+        function saveToLocalStorage() {
+            const data = {
+                version: APP_CONFIG.version,
+                appState: appState,
+                swotData: swotData,
+                strategiesData: strategiesData,
+                savedAt: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem(APP_CONFIG.storagePrefix + appState.projectCode, JSON.stringify(data));
+                appState.lastSaved = new Date();
+                appState.isDirty = false;
+            } catch (error) {
+                console.error('Erreur de sauvegarde:', error);
+                showNotification('⚠️ Erreur de sauvegarde locale', 'error');
+            }
+        }
+        
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem(APP_CONFIG.storagePrefix + appState.projectCode);
+                if (!saved) return false;
+                
+                const data = JSON.parse(saved);
+                
+                // Vérification de compatibilité de version
+                if (data.version && data.version !== APP_CONFIG.version) {
+                    console.warn('Version de données différente détectée');
+                }
+                
+                // Restauration des données
+                if (data.appState) {
+                    appState.organization = data.appState.organization || '';
+                    appState.currentUser = data.appState.currentUser || '';
+                }
+                
+                swotData = data.swotData || { strengths: [], weaknesses: [], opportunities: [], threats: [] };
+                strategiesData = data.strategiesData || { offensive: [], defensive: [], development: [], survival: [] };
+                
+                // Mise à jour de l'interface
+                document.getElementById('organizationInput').value = appState.organization;
+                document.getElementById('userInput').value = appState.currentUser;
+                
+                renderAllData();
+                appState.lastSaved = new Date(data.savedAt);
+                appState.isDirty = false;
+                
+                return true;
+            } catch (error) {
+                console.error('Erreur de chargement:', error);
+                showNotification('⚠️ Erreur de chargement des données', 'error');
+                return false;
+            }
+        }
+        
+        // Auto-sauvegarde
+        function startAutoSave() {
+            setInterval(() => {
+                if (appState.isDirty) {
+                    saveToLocalStorage();
+                }
+            }, APP_CONFIG.autoSaveInterval);
+        }
+        
+        function markAsDirty() {
+            appState.isDirty = true;
+        }
+        
+        // Partage et collaboration
+        function exportForSharing() {
+            const data = {
+                version: APP_CONFIG.version,
+                projectCode: appState.projectCode,
+                organization: appState.organization,
+                lastContributor: appState.currentUser || 'Anonyme',
+                swotData: swotData,
+                strategiesData: strategiesData,
+                exportedAt: new Date().toISOString(),
+                exportedBy: appState.currentUser || 'Anonyme',
+                instructions: 'Importez ce fichier dans l\'Analyseur SWOT, ajoutez vos contributions, puis réexportez pour partage.'
+            };
+            
+            const filename = `SWOT_Partage_${appState.projectCode}_${(appState.currentUser || 'Anonyme').replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.json`;
+            downloadJSON(data, filename);
+            
+            showInstructions();
+            showNotification('📤 Fichier de partage créé !', 'success');
+        }
+        
+        function importSharedFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = handleFileImport;
+            input.click();
+        }
+        
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Validation des données
+                    if (!data.swotData && !data.strategiesData) {
+                        throw new Error('Format de fichier invalide');
+                    }
+                    
+                    // Confirmation d'import
+                    const shouldImport = confirm(
+                        `Fichier de: ${data.lastContributor || 'Inconnu'}\n` +
+                        `Projet: ${data.organization || 'Non renseigné'}\n` +
+                        `Exporté le: ${new Date(data.exportedAt).toLocaleDateString('fr-FR')}\n\n` +
+                        `Voulez-vous importer ces données ?\n` +
+                        `(Vos données actuelles seront remplacées)`
+                    );
+                    
+                    if (shouldImport) {
+                        importData(data);
+                    }
+                } catch (error) {
+                    console.error('Erreur d\'import:', error);
+                    showNotification('❌ Erreur lors du chargement du fichier. Veuillez vérifier le format.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function importData(data) {
+            // Mise à jour du projet
+            if (data.projectCode) {
+                appState.projectCode = data.projectCode;
+                updateProjectDisplay();
+            }
+            
+            appState.organization = data.organization || '';
+            swotData = data.swotData || { strengths: [], weaknesses: [], opportunities: [], threats: [] };
+            strategiesData = data.strategiesData || { offensive: [], defensive: [], development: [], survival: [] };
+            
+            document.getElementById('organizationInput').value = appState.organization;
+            
+            renderAllData();
+            markAsDirty();
+            saveToLocalStorage();
+            
+            const message = `✅ Données importées avec succès !\n\n` +
+                          `Projet: ${appState.organization || 'Non défini'}\n` +
+                          `Contributeur précédent: ${data.lastContributor}\n\n` +
+                          `Vous pouvez maintenant ajouter vos contributions et réexporter le fichier.`;
+            
+            showNotification('📥 Import réussi !', 'success');
+            alert(message);
+        }
+        
+        // Fonctions modales
+        function showInstructions() {
+            document.getElementById('instructionsModal').style.display = 'flex';
+        }
+        
+        function hideInstructions() {
+            document.getElementById('instructionsModal').style.display = 'none';
+        }
+        
+        // Export et sauvegarde
+        function exportData() {
+            const reportText = generateReport();
+            const filename = `SWOT_Rapport_${appState.projectCode}_${new Date().toISOString().split('T')[0]}.txt`;
+            downloadText(reportText, filename);
+            showNotification('📄 Rapport exporté !', 'success');
+        }
+        
+        function generateReport() {
+            let report = 'RAPPORT D\'ANALYSE SWOT COMPLET\n';
+            report += '==============================\n';
+            report += `Projet: ${appState.projectCode}\n`;
+            report += `Organisation: ${appState.organization || 'Non renseigné'}\n`;
+            report += `Analyste: ${appState.currentUser || 'Non renseigné'}\n`;
+            report += `Généré le: ${formatDate(new Date())} à ${formatTime(new Date())}\n\n`;
+            
+            report += '🔍 ANALYSE SWOT DE BASE\n';
+            report += '========================\n\n';
+            
+            // Forces
+            report += '💪 FORCES\n';
+            report += '---------\n';
+            swotData.strengths.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n';
+            
+            // Faiblesses
+            report += '⚠️ FAIBLESSES\n';
+            report += '-------------\n';
+            swotData.weaknesses.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n';
+            
+            // Opportunités
+            report += '🚀 OPPORTUNITÉS\n';
+            report += '----------------\n';
+            swotData.opportunities.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n';
+            
+            // Menaces
+            report += '⚡ MENACES\n';
+            report += '----------\n';
+            swotData.threats.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n\n';
+            
+            report += '🎯 ANALYSE CROISÉE - MATRICE STRATÉGIQUE\n';
+            report += '=======================================\n\n';
+            
+            // Stratégies offensives
+            report += '🚀 STRATÉGIES OFFENSIVES (Forces × Opportunités)\n';
+            report += '"Comment utiliser nos forces pour saisir les opportunités ?"\n';
+            report += '-----------------------------------------------------------\n';
+            strategiesData.offensive.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n';
+            
+            // Stratégies défensives
+            report += '🛡️ STRATÉGIES DÉFENSIVES (Forces × Menaces)\n';
+            report += '"Comment utiliser nos forces pour contrer les menaces ?"\n';
+            report += '-------------------------------------------------------\n';
+            strategiesData.defensive.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n';
+            
+            // Stratégies de développement
+            report += '📈 STRATÉGIES DE DÉVELOPPEMENT (Faiblesses × Opportunités)\n';
+            report += '"Comment corriger nos faiblesses pour profiter des opportunités ?"\n';
+            report += '------------------------------------------------------------\n';
+            strategiesData.development.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n';
+            
+            // Stratégies de survie
+            report += '⚠️ STRATÉGIES DE SURVIE (Faiblesses × Menaces)\n';
+            report += '"Comment minimiser nos faiblesses face aux menaces ?"\n';
+            report += '--------------------------------------------------\n';
+            strategiesData.survival.forEach((item, index) => {
+                report += `${index + 1}. ${item.text}\n`;
+            });
+            report += '\n\n';
+            
+            // Statistiques
+            report += '📊 STATISTIQUES\n';
+            report += '================\n';
+            report += `Forces: ${swotData.strengths.length} éléments\n`;
+            report += `Faiblesses: ${swotData.weaknesses.length} éléments\n`;
+            report += `Opportunités: ${swotData.opportunities.length} éléments\n`;
+            report += `Menaces: ${swotData.threats.length} éléments\n\n`;
+            report += `Stratégies Offensives: ${strategiesData.offensive.length} éléments\n`;
+            report += `Stratégies Défensives: ${strategiesData.defensive.length} éléments\n`;
+            report += `Stratégies de Développement: ${strategiesData.development.length} éléments\n`;
+            report += `Stratégies de Survie: ${strategiesData.survival.length} éléments\n\n`;
+            report += '---\n';
+            report += 'Rapport généré par l\'Analyseur SWOT Avancé - Version GitHub Pages';
+            
+            return report;
+        }
+        
+        function saveToFile() {
+            const data = {
+                version: APP_CONFIG.version,
+                projectCode: appState.projectCode,
+                appState: appState,
+                swotData: swotData,
+                strategiesData: strategiesData,
+                savedAt: new Date().toISOString()
+            };
+            
+            const filename = `SWOT_Projet_${appState.projectCode}_${new Date().toISOString().split('T')[0]}.json`;
+            downloadJSON(data, filename);
+            showNotification('💾 Sauvegarde créée !', 'success');
+        }
+        
+        function loadFromFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        importData(data);
+                    } catch (error) {
+                        console.error('Erreur de chargement:', error);
+                        showNotification('❌ Erreur lors du chargement du fichier.', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // Fonctions de téléchargement
+        function downloadJSON(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            downloadBlob(blob, filename);
+        }
+        
+        function downloadText(text, filename) {
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            downloadBlob(blob, filename);
+        }
+        
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Réinitialisation
+        function clearAllData() {
+            if (!confirm('Êtes-vous sûr de vouloir réinitialiser toute l\'analyse ?')) {
+                return;
+            }
+            
+            swotData = { strengths: [], weaknesses: [], opportunities: [], threats: [] };
+            strategiesData = { offensive: [], defensive: [], development: [], survival: [] };
+            renderAllData();
+            markAsDirty();
+            saveToLocalStorage();
+            showNotification('🔄 Analyse réinitialisée !', 'info');
+        }
+        
+        // Système de notifications
+        function showNotification(message, type = 'info') {
+            // Création de la notification
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            // Styles
+            Object.assign(notification.style, {
+                position: 'fixed',
+                top: '20px',
+                right: '20px',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                color: 'white',
+                fontWeight: '500',
+                zIndex: '9999',
+                animation: 'slideInRight 0.3s ease-out',
+                maxWidth: '300px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            });
+            
+            // Couleurs selon le type
+            const colors = {
+                'success': '#16a34a',
+                'error': '#dc2626',
+                'warning': '#ea580c',
+                'info': '#2563eb'
+            };
+            notification.style.background = colors[type] || colors.info;
+            
+            // Ajout au DOM
+            document.body.appendChild(notification);
+            
+            // Suppression automatique
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Ajout des styles d'animation pour les notifications
+        const notificationStyles = document.createElement('style');
+        notificationStyles.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(notificationStyles);
+        
+        // Gestionnaires d'événements
+        function setupEventListeners() {
+            // Initialisation du projet
+            initializeProject();
+            
+            // Navigation par onglets
+            document.getElementById('swotTab').addEventListener('click', () => showTab('swot'));
+            document.getElementById('crossedTab').addEventListener('click', () => showTab('crossed'));
+            
+            // Gestion de projet
+            document.getElementById('shareBtn').addEventListener('click', exportForSharing);
+            document.getElementById('importBtn').addEventListener('click', importSharedFile);
+            document.getElementById('newSessionBtn').addEventListener('click', createNewProject);
+            
+            // Modales
+            document.getElementById('closeInstructionsBtn').addEventListener('click', hideInstructions);
+            
+            // Champs de saisie
+            const organizationInput = document.getElementById('organizationInput');
+            const userInput = document.getElementById('userInput');
+            
+            const debouncedSave = debounce(() => {
+                markAsDirty();
+                saveToLocalStorage();
+            }, 1000);
+            
+            organizationInput.addEventListener('input', function(e) {
+                appState.organization = e.target.value;
+                updateProjectDisplay();
+                debouncedSave();
+            });
+            
+            userInput.addEventListener('input', function(e) {
+                appState.currentUser = e.target.value;
+                debouncedSave();
+            });
+            
+            // Ajout d'éléments
+            document.querySelectorAll('.input-text').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addItem(this.dataset.category);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    addItem(this.dataset.category);
+                });
+            });
+            
+            // Boutons d'action
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('saveBtn').addEventListener('click', saveToFile);
+            document.getElementById('loadBtn').addEventListener('click', loadFromFile);
+            document.getElementById('clearBtn').addEventListener('click', clearAllData);
+            document.getElementById('printBtn').addEventListener('click', () => window.print());
+            
+            // Raccourcis clavier
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 's':
+                            e.preventDefault();
+                            saveToFile();
+                            break;
+                        case 'o':
+                            e.preventDefault();
+                            loadFromFile();
+                            break;
+                        case 'e':
+                            e.preventDefault();
+                            exportData();
+                            break;
+                    }
+                }
+            });
+            
+            // Avertissement avant fermeture si données non sauvegardées
+            window.addEventListener('beforeunload', function(e) {
+                if (appState.isDirty) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        }
+        
+        // Fonctions globales pour les événements inline
+        window.removeItem = removeItem;
+        
+        // Initialisation de l'application
+        document.addEventListener('DOMContentLoaded', setupEventListeners);
+        
+        // Gestion des erreurs globales
+        window.addEventListener('error', function(e) {
+            console.error('Erreur applicative:', e.error);
+            showNotification('❌ Une erreur inattendue s\'est produite', 'error');
+        });
+        
+        // Service Worker pour mise en cache (optionnel pour GitHub Pages)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Possibilité d'ajouter un service worker pour le cache
+                console.log('Application prête pour le cache offline');
+            });
+        }
+    </script>
+</body>
+</html>
