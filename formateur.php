@@ -699,14 +699,14 @@ if ($isLoggedIn) {
                             <td>
                                 <div class="action-buttons">
                                     <?php if ($p['swot_data']): ?>
-                                    <button class="action-btn view" onclick='viewAnalysis(<?= json_encode([
-                                        "id" => $p["id"],
-                                        "nom" => $p["nom"],
-                                        "prenom" => $p["prenom"],
-                                        "organisation" => $p["organisation"],
-                                        "swot" => json_decode($p["swot_data"], true),
-                                        "tows" => json_decode($p["tows_data"], true)
-                                    ]) ?>)'>
+                                    <button class="action-btn view" data-participant="<?= htmlspecialchars(json_encode([
+                                        'id' => $p['id'],
+                                        'nom' => $p['nom'],
+                                        'prenom' => $p['prenom'],
+                                        'organisation' => $p['organisation'],
+                                        'swot' => json_decode($p['swot_data'], true),
+                                        'tows' => json_decode($p['tows_data'], true)
+                                    ], JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8') ?>" onclick="viewAnalysisFromButton(this)">
                                         Voir
                                     </button>
                                     <?php endif; ?>
@@ -778,6 +778,17 @@ if ($isLoggedIn) {
             document.querySelectorAll('.participant-checkbox').forEach(cb => {
                 cb.checked = checked;
             });
+        }
+
+        function viewAnalysisFromButton(button) {
+            try {
+                const jsonData = button.getAttribute('data-participant');
+                const data = JSON.parse(jsonData);
+                viewAnalysis(data);
+            } catch (e) {
+                console.error('Erreur parsing JSON:', e);
+                alert('Erreur lors du chargement de l\'analyse.');
+            }
         }
 
         function viewAnalysis(data) {
